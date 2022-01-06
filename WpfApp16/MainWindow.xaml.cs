@@ -1,4 +1,6 @@
-﻿namespace WpfApp16
+﻿using System.Windows.Input;
+
+namespace WpfApp16
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
