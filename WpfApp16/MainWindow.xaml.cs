@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace WpfApp16
 {
@@ -23,6 +24,16 @@ namespace WpfApp16
             {
                 return true; // The file and setting exist 
             }
+        }
+
+        private void InfoMsg(string msg)
+        {
+            MessageBox.Show(msg, Properties.Resources.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ErrMsg(string msg)
+        {
+            MessageBox.Show(msg, Properties.Resources.AppTitle, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
