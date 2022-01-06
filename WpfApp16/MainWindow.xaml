@@ -5,7 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp16"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="The Alarm" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5,10,5, 2"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+        
+        <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid FocusManager.FocusedElement="{Binding ElementName=timeText}" Background="LightCyan">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -30,7 +46,7 @@
         
         <ListBox Grid.Column="2" Margin="10" x:Name="listBox"/>
         
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Background="PaleGoldenrod">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Background="PaleGoldenrod">
             <RadioButton x:Name="alarmOn" Content="Turn On Alarm"/>
             <RadioButton x:Name="alarmOff" Content="Turn Off Alarm" IsChecked="True"/>
         </StackPanel>
