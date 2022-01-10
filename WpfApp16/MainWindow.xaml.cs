@@ -1,6 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace WpfApp16
 {
@@ -9,9 +16,22 @@ namespace WpfApp16
     /// </summary>
     public partial class MainWindow
     {
+        private string showTime;
+        private Dictionary<string, string> timeAndMsgs;
+        private DispatcherTimer timer;
+        
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void InitProc()
+        {
+            timeAndMsgs = new Dictionary<string, string>();
+            showTime = "";
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(200);
+            timer.Tick += new EventHandler(timerTick);
         }
 
         private bool IsExistsSaveConfigPath()
@@ -66,6 +86,67 @@ namespace WpfApp16
                 // The message is not correct as time
                 ErrMsg("Type a date time correctly.");
                 timeText.Focus();
+            }
+        }
+
+        private void Window_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (listBox.Items.Count > 0)
+                {
+                    if (IsExistsSaveConfigPath())
+                    {
+                        SaveConfigFile();
+                    }
+                    else
+                    {
+                        ShowSaveDialogToConfigFile();
+                    }
+                }
+
+                Properties.Settings.Default.AlarmEnabled = alarmOn.IsChecked == true;
+                Properties.Settings.Default.Save();
+            }
+            catch(Exception ex)
+            {
+                ErrMsg(ex.Message);
+            }
+            
+        }
+
+        private void Window_OnClosing(object sender, CancelEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveConfigFile()
+        {
+            using (var sw = new StreamWriter(Properties.Settings.Default.SavingConfigPath, append: false,
+                       encoding: Encoding.UTF8))
+            {
+                // Output the list file
+                foreach (string item in listBox.Items)
+                {
+                    // It Writes one line
+                    sw.WriteLine(item);
+                }
+            }
+        }
+
+        private void ShowSaveDialogToConfigFile()
+        {
+            // Generate the dialog
+            var dlg = new SaveFileDialog();
+            dlg.Title = "Save the config";
+            dlg.FileName = Properties.Resources.AppTitle + "_config.dat";
+            dlg.Filter = "Config File|*.dat|All files|*.*";
+            
+            // Show the dialog of saving
+            if (dlg.ShowDialog() == true)
+            {
+                Properties.Settings.Default.SavingConfigPath = dlg.FileName;
+                SaveConfigFile();
             }
         }
     }

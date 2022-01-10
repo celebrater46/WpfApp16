@@ -4,8 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp16"
+        xmlns:props="clr-namespace:WpfApp16.Properties"
         mc:Ignorable="d"
-        Title="Hello Alarm" Height="450" Width="800">
+        Title="Hello Alarm" Height="450" Width="800"
+        ResizeMode="CanResizeWithGrip"
+        Loaded="Window_OnLoaded" Closing="Window_OnClosing">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="Margin" Value="5,10,5, 2"/>
