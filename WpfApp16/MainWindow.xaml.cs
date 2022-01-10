@@ -177,18 +177,27 @@ namespace WpfApp16
 
         private void alarmOnOff_Checked(object sender, RoutedEventArgs e)
         {
-            if (timer == null)
-            {
-                return;
-            }
-
+            // if (timer == null)
+            // {
+            //     return;
+            // }
+            //
+            // if (alarmOn.IsChecked == true)
+            // {
+            //     timer.Start();
+            // }
+            // else
+            // {
+            //     timer.Stop();
+            // }
+            
             if (alarmOn.IsChecked == true)
             {
-                timer.Start();
+                timer?.Start();
             }
             else
             {
-                timer.Stop();
+                timer?.Stop();
             }
         }
     }
