@@ -23,6 +23,7 @@ namespace WpfApp16
         public MainWindow()
         {
             InitializeComponent();
+            InitProc();
         }
 
         private void InitProc()
@@ -34,8 +35,20 @@ namespace WpfApp16
             timer.Tick += new EventHandler(timerTick);
         }
 
+        private void timerTick(object sender, EventArgs e)
+        {
+            string time = DateTime.Now.ToString("HH:mm");
+            if (time != showTime && timeAndMsgs.ContainsKey(time))
+            {
+                showTime = time;
+                InfoMsg(timeAndMsgs[time]);
+            }
+        }
+
         private bool IsExistsSaveConfigPath()
         {
+            // if (string.IsNullOrWhiteSpace(Properties.Settings.Default.SaveConfigPath) ||
+            //     System.IO.File.Exists(Properties.Settings.Default.SaveConfigPath) == false)
             if (string.IsNullOrWhiteSpace(Properties.Settings.Default.SavingConfigPath) ||
                 System.IO.File.Exists(Properties.Settings.Default.SavingConfigPath) == false)
             {
@@ -75,9 +88,20 @@ namespace WpfApp16
                 {
                     // The time and the message both exist
                     listBox.Items.Add(timeText.Text + "\t" + msgText.Text);
+
+                    if (timeAndMsgs.ContainsKey(timeText.Text))
+                    {
+                        ErrMsg("This time already exists.");
+                    }
+                    else
+                    {
+                        listBox.Items.Add(timeText.Text + "\t" + msgText);
+                        timeAndMsgs.Add(timeText.Text, msgText.Text);
+                        
+                        timeText.Clear();
+                        msgText.Clear();
+                    }
                     
-                    timeText.Clear();
-                    msgText.Clear();
                     timeText.Focus();
                 }
             }
@@ -105,7 +129,8 @@ namespace WpfApp16
                     }
                 }
 
-                Properties.Settings.Default.AlarmEnabled = alarmOn.IsChecked == true;
+                // Properties.Settings.Default.AlarmEnabled = alarmOn.IsChecked == true;
+                Properties.Settings.Default.AlarmEnabled = "alarmOn.IsChecked == true";
                 Properties.Settings.Default.Save();
             }
             catch(Exception ex)
@@ -147,6 +172,23 @@ namespace WpfApp16
             {
                 Properties.Settings.Default.SavingConfigPath = dlg.FileName;
                 SaveConfigFile();
+            }
+        }
+
+        private void alarmOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            if (timer == null)
+            {
+                return;
+            }
+
+            if (alarmOn.IsChecked == true)
+            {
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
             }
         }
     }
